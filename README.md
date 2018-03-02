@@ -2,14 +2,15 @@
 
 ![Swift 3.x](https://img.shields.io/badge/Swift-3.x-blue.svg)
 ![Swift 4.x](https://img.shields.io/badge/Swift-4.x-orange.svg)
+![iOS 9.0+](https://img.shields.io/badge/iOS-9.0+-green.svg)
 
 ![Preview](preview.png)
 
 ## Requirements
 
-* iOS 9.0
-* Swift 3
-* Xcode 8
+* iOS 9.0 +
+* Swift 3.x, 4.x
+* Xcode 8 +
 
 ## Installation
 
@@ -26,7 +27,7 @@ pod 'SmoothTab'
 To setup and customize the component you should create items with  `SmoothTabItem`.
 
 ```swift
-// Set Smooth Tab View on UIView in stroyboatd
+// Set Smooth Tab View on UIView in stroyboard
 @IBOutlet weak var smoothTabView: SmoothTabView!
 
 // Or create it without storyboard
@@ -45,7 +46,7 @@ options.shadow = .default
 smoothTabView.setup(with: items, options: options, delegate: self)
 ```
 
-For tab selection action please extend  `SmoothTabDelegate`:
+For tab selection action please implement  `SmoothTabDelegate`:
 
 ```swift
 @objc public protocol SmoothTabDelegate: class {
