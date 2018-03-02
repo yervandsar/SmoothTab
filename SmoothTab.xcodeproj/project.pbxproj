@@ -12,6 +12,13 @@
 		C1D8D0D420492869006A4D80 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1D8D0D220492869006A4D80 /* Main.storyboard */; };
 		C1D8D0D620492869006A4D80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C1D8D0D520492869006A4D80 /* Assets.xcassets */; };
 		C1D8D0D920492869006A4D80 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1D8D0D720492869006A4D80 /* LaunchScreen.storyboard */; };
+		C1D8D0E620492941006A4D80 /* SmoothTabDefaultOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D8D0E120492941006A4D80 /* SmoothTabDefaultOptions.swift */; };
+		C1D8D0E720492941006A4D80 /* SmoothTabOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D8D0E220492941006A4D80 /* SmoothTabOptions.swift */; };
+		C1D8D0E820492941006A4D80 /* SmoothTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D8D0E320492941006A4D80 /* SmoothTabView.swift */; };
+		C1D8D0E920492941006A4D80 /* SmoothTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D8D0E420492941006A4D80 /* SmoothTabItem.swift */; };
+		C1D8D0EA20492941006A4D80 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D8D0E520492941006A4D80 /* Array+Extensions.swift */; };
+		C1D8D0EC20492978006A4D80 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D8D0EB20492978006A4D80 /* Constants.swift */; };
+		C1D8D0EE20492BBE006A4D80 /* SmoothTab.podspec in Resources */ = {isa = PBXBuildFile; fileRef = C1D8D0ED20492BBE006A4D80 /* SmoothTab.podspec */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +29,13 @@
 		C1D8D0D520492869006A4D80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C1D8D0D820492869006A4D80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C1D8D0DA20492869006A4D80 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C1D8D0E120492941006A4D80 /* SmoothTabDefaultOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmoothTabDefaultOptions.swift; sourceTree = "<group>"; };
+		C1D8D0E220492941006A4D80 /* SmoothTabOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmoothTabOptions.swift; sourceTree = "<group>"; };
+		C1D8D0E320492941006A4D80 /* SmoothTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmoothTabView.swift; sourceTree = "<group>"; };
+		C1D8D0E420492941006A4D80 /* SmoothTabItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmoothTabItem.swift; sourceTree = "<group>"; };
+		C1D8D0E520492941006A4D80 /* Array+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		C1D8D0EB20492978006A4D80 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		C1D8D0ED20492BBE006A4D80 /* SmoothTab.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SmoothTab.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +52,7 @@
 		C1D8D0C220492868006A4D80 = {
 			isa = PBXGroup;
 			children = (
+				C1D8D0ED20492BBE006A4D80 /* SmoothTab.podspec */,
 				C1D8D0CD20492868006A4D80 /* SmoothTab */,
 				C1D8D0CC20492868006A4D80 /* Products */,
 			);
@@ -54,6 +69,7 @@
 		C1D8D0CD20492868006A4D80 /* SmoothTab */ = {
 			isa = PBXGroup;
 			children = (
+				C1D8D0E02049288B006A4D80 /* Classes */,
 				C1D8D0CE20492869006A4D80 /* AppDelegate.swift */,
 				C1D8D0D020492869006A4D80 /* ViewController.swift */,
 				C1D8D0D220492869006A4D80 /* Main.storyboard */,
@@ -62,6 +78,19 @@
 				C1D8D0DA20492869006A4D80 /* Info.plist */,
 			);
 			path = SmoothTab;
+			sourceTree = "<group>";
+		};
+		C1D8D0E02049288B006A4D80 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				C1D8D0E520492941006A4D80 /* Array+Extensions.swift */,
+				C1D8D0E120492941006A4D80 /* SmoothTabDefaultOptions.swift */,
+				C1D8D0E420492941006A4D80 /* SmoothTabItem.swift */,
+				C1D8D0E220492941006A4D80 /* SmoothTabOptions.swift */,
+				C1D8D0E320492941006A4D80 /* SmoothTabView.swift */,
+				C1D8D0EB20492978006A4D80 /* Constants.swift */,
+			);
+			path = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +154,7 @@
 			files = (
 				C1D8D0D920492869006A4D80 /* LaunchScreen.storyboard in Resources */,
 				C1D8D0D620492869006A4D80 /* Assets.xcassets in Resources */,
+				C1D8D0EE20492BBE006A4D80 /* SmoothTab.podspec in Resources */,
 				C1D8D0D420492869006A4D80 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -138,6 +168,12 @@
 			files = (
 				C1D8D0D120492869006A4D80 /* ViewController.swift in Sources */,
 				C1D8D0CF20492869006A4D80 /* AppDelegate.swift in Sources */,
+				C1D8D0E720492941006A4D80 /* SmoothTabOptions.swift in Sources */,
+				C1D8D0EA20492941006A4D80 /* Array+Extensions.swift in Sources */,
+				C1D8D0E620492941006A4D80 /* SmoothTabDefaultOptions.swift in Sources */,
+				C1D8D0E920492941006A4D80 /* SmoothTabItem.swift in Sources */,
+				C1D8D0E820492941006A4D80 /* SmoothTabView.swift in Sources */,
+				C1D8D0EC20492978006A4D80 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,8 +311,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 94ST773MP3;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SmoothTab/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yervandsar.SmoothTab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -290,8 +327,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 94ST773MP3;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SmoothTab/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yervandsar.SmoothTab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
