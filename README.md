@@ -1,6 +1,7 @@
 # SmoothTab
 
-![Swift 3.x](https://img.shields.io/badge/Swift-2.3.x-orange.svg)
+![Swift 3.x](https://img.shields.io/badge/Swift-3.x-blue.svg)
+![Swift 4.x](https://img.shields.io/badge/Swift-4.x-orange.svg)
 
 ![Preview](preview.png)
 
