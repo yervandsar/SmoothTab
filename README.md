@@ -8,9 +8,9 @@
 
 ## Requirements
 
-* iOS 9.0 +
+* iOS 9.0+
 * Swift 3.x, 4.x
-* Xcode 8 +
+* Xcode 8+
 
 ## Installation
 
