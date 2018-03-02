@@ -1,11 +1,8 @@
 # SmoothTab
 
-![Swift 2.3.x](https://img.shields.io/badge/Swift-2.3.x-orange.svg)
-[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/ColorMatchTabs.svg)](https://img.shields.io/cocoapods/v/GuillotineMenu.svg)
+![Swift 3.x](https://img.shields.io/badge/Swift-2.3.x-orange.svg)
 
 ![Preview](preview.png)
-
-Also, read how it was done in [our blog](https://yalantis.com/blog/how-we-developed-colormatchtabs-animation-for-ios/)
 
 ## Requirements
 
