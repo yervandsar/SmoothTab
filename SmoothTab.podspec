@@ -3,7 +3,7 @@ s.name             = 'SmoothTab'
 s.version          = '0.1.0'
 s.summary          = 'Smooth customizabled tabs for iOS apps.'
 
-s.homepage         = 'https://github.com/yervandsar/SmootTab'
+s.homepage         = 'https://github.com/yervandsar/SmoothTab'
 s.license          = { :type => 'MIT', :file => 'LICENSE' }
 s.author           = { 'Yervand Saribekyan' => 'yervandsar@gmail.com' }
 s.source           = { :git => 'https://github.com/yervandsar/SmoothTab.git', :tag => s.version.to_s }
