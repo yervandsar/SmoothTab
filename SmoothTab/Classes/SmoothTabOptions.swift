@@ -1,12 +1,21 @@
 //
 //  SmoothTabOptions.swift
-//  SmothTab
+//  SmoothTab
 //
 //  Created by Yervand Saribekyan on 3/1/18.
 //  Copyright © 2018 Yervand Saribekyan. All rights reserved.
 //
 
 import UIKit
+
+/// For set corner radius to selected view
+///
+/// - rounded: for calculating rounded view
+/// - fixed: fixed corner radius with corner option
+public enum CornerRadius {
+	case rounded
+	case fixed(corner: CGFloat)
+}
 
 public struct SmoothTabOptions {
 
@@ -16,12 +25,21 @@ public struct SmoothTabOptions {
 
     public init() {}
 
-    public var backgroundColor: UIColor = SmoothTabDefaultOptions.backgroundColor
-    public var titleFont: UIFont = SmoothTabDefaultOptions.titleFont
-    public var titleColor: UIColor = SmoothTabDefaultOptions.titleColor
-    public var imageContentMode: UIViewContentMode = SmoothTabDefaultOptions.imageContentMode
 
-    public var shadow: SmoothTabShadowOptions?
+	/// Tabs parent view options
+	public var backgroundColor: UIColor = SmoothTabDefaultOptions.backgroundColor
+	public var imageContentMode: UIViewContentMode = SmoothTabDefaultOptions.imageContentMode
+	public var itemsMargin: CGFloat = SmoothTabDefaultOptions.itemsMargin
+	public var shadow: SmoothTabShadowOptions?
+
+	/// Selected View Options
+	public var titleFont: UIFont = SmoothTabDefaultOptions.titleFont
+	public var titleColor: UIColor = SmoothTabDefaultOptions.titleColor
+	public var cornerRadius: CornerRadius = SmoothTabDefaultOptions.cornerRadius
+	public var borderWidth: CGFloat = SmoothTabDefaultOptions.borderWidth
+	public var borderColor: UIColor = SmoothTabDefaultOptions.borderColor
+	public var innerPadding: CGFloat = SmoothTabDefaultOptions.innerPadding
+	public var imageTitleMargin: CGFloat = SmoothTabDefaultOptions.imageTitleMargin
 
 }
 

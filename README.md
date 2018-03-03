@@ -46,6 +46,47 @@ options.shadow = .default
 smoothTabView.setup(with: items, options: options, delegate: self)
 ```
 
+You can customize views with options `SmoothTabOptions, SmoothTabShadowOptions`:
+```swift
+
+/// For set corner radius to selected view
+///
+/// - rounded: for calculating rounded view
+/// - fixed: fixed corner radius with corner option
+public enum CornerRadius {
+	case rounded
+	case fixed(corner: CGFloat)
+}
+
+public struct SmoothTabOptions {
+
+	/// Tabs parent view options
+	public var backgroundColor: UIColor
+	public var imageContentMode: UIViewContentMode
+	public var itemsMargin: CGFloat
+	public var shadow: SmoothTabShadowOptions?
+
+	/// Selected View Options
+	public var titleFont: UIFont
+	public var titleColor: UIColor
+	public var cornerRadius: CornerRadius
+	public var borderWidth: CGFloat
+	public var borderColor: UIColor
+	public var innerPadding: CGFloat
+	public var imageTitleMargin: CGFloat
+
+}
+
+public struct SmoothTabShadowOptions {
+
+	public var color: UIColor
+	public var offset: CGSize
+	public var opacity: Float
+	public var radius: CGFloat
+
+}
+```
+
 For tab selection action please implement  `SmoothTabDelegate`:
 
 ```swift
