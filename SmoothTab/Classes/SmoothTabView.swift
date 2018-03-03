@@ -14,37 +14,39 @@ import UIKit
 
 public class SmoothTabView: UIView {
 
-    let scrollView = UIScrollView()
-    let stackView = UIStackView()
+    private let scrollView = UIScrollView()
+    private let stackView = UIStackView()
 
-    lazy var highlighterView: UIView = {
-        let frame = CGRect(origin: CGPoint.zero, size: CGSize(width: 0, height: self.bounds.height))
-        let highlighterView = UIView(frame: frame)
+    private lazy var selectedView: UIView = {
+        let frame = CGRect(
+			origin: CGPoint.zero,
+			size: CGSize(width: 0, height: self.bounds.height
+		))
 
-        highlighterView.layer.cornerRadius = self.bounds.height / 2
-        highlighterView.alpha = 0
+        let selectedView = UIView(frame: frame)
+        selectedView.alpha = 0
 
-        return highlighterView
+        return selectedView
     }()
 
-    var items = [SmoothTabItem]() {
+    private var items = [SmoothTabItem]() {
         didSet {
             itemsViews = items.enumerated().map { index, item in smoothBarItemView(for: item, at: index) }
         }
     }
-    var itemsViews = [UIStackView]() {
+    private var itemsViews = [UIStackView]() {
         didSet {
             render()
         }
     }
 
-    var options: SmoothTabOptions = .default
+    private var options: SmoothTabOptions = .default
 
     var selectedSegmentIndex: Int = 0 {
         didSet {
             if oldValue != selectedSegmentIndex {
                 selectItem(at: selectedSegmentIndex)
-                highlighterView.alpha = 1
+                selectedView.alpha = 1
                 transition(from: oldValue, to: selectedSegmentIndex)
                 delegate?.smootItemSelected(at: selectedSegmentIndex)
             }
@@ -72,11 +74,24 @@ public class SmoothTabView: UIView {
         self.options = options
         self.items = items
         self.delegate = delegate
-        stackView.backgroundColor = options.backgroundColor
-        if let shadowOptions = options.shadow {
-            setShadow(with: shadowOptions)
-        }
+		setOptions(options)
     }
+
+	private func setOptions(_ options: SmoothTabOptions) {
+		stackView.backgroundColor = options.backgroundColor
+		selectedView.layer.borderWidth = options.borderWidth
+		selectedView.layer.borderColor = options.borderColor.cgColor
+		switch options.cornerRadius {
+		case .rounded:
+			selectedView.layer.cornerRadius = bounds.size.height / 2
+		case let .fixed(corner):
+			selectedView.layer.cornerRadius = corner
+		}
+		if let shadowOptions = options.shadow {
+			setShadow(with: shadowOptions)
+		}
+
+	}
 
     private func setShadow(with options: SmoothTabShadowOptions) {
         layer.shadowColor = options.color.cgColor
@@ -90,8 +105,8 @@ public class SmoothTabView: UIView {
     }
 
     private func render() {
-        stackView.addSubview(highlighterView)
-        stackView.sendSubview(toBack: highlighterView)
+        stackView.addSubview(selectedView)
+        stackView.sendSubview(toBack: selectedView)
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         itemsViews.forEach { stackView.addArrangedSubview($0) }
     }
@@ -121,12 +136,11 @@ public class SmoothTabView: UIView {
 
     override public func didMoveToWindow() {
         super.didMoveToWindow()
-        if window != nil {
-            layoutIfNeeded()
-            if itemsViews.count > selectedSegmentIndex {
-                transition(from: selectedSegmentIndex, to: selectedSegmentIndex)
-            }
-        }
+		guard window != nil else { return }
+		layoutIfNeeded()
+		if itemsViews.count > selectedSegmentIndex {
+			transition(from: selectedSegmentIndex, to: selectedSegmentIndex)
+		}
     }
 
     override public func layoutSubviews() {
@@ -142,7 +156,7 @@ private extension SmoothTabView {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         stackView.distribution = .fill
-        stackView.spacing = 15
+        stackView.spacing = options.itemsMargin
 
         addScrollView()
         addStackView()
@@ -200,7 +214,7 @@ private extension SmoothTabView {
 
         let parentView = UIStackView()
         parentView.tag = index
-        parentView.spacing = 15
+        parentView.spacing = options.imageTitleMargin
         parentView.distribution = .fill
         parentView.accessibilityIdentifier = kSmoothBarView + "_\(index)"
 
@@ -217,7 +231,11 @@ private extension SmoothTabView {
         parentView.addConstraint(heightConstraint)
 
         parentView.isLayoutMarginsRelativeArrangement = true
-        parentView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        parentView.layoutMargins = UIEdgeInsets(
+			top: 0,
+			left: options.innerPadding,
+			bottom: 0,
+			right: options.innerPadding)
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(itemTapped(_:)))
         tapGesture.numberOfTapsRequired = 1
@@ -339,26 +357,26 @@ private extension SmoothTabView {
         // offset for first item
         let point = convert(toView.frame.origin, to: self)
         let offsetForFirstItem: CGFloat = toIndex == 0 ? -HighlighterViewOffScreenOffset : 0
-        highlighterView.frame.origin.x = point.x + offsetForFirstItem
+        selectedView.frame.origin.x = point.x + offsetForFirstItem
 
         // offset for last item
         let offsetForLastItem: CGFloat = toIndex == itemsViews.count - 1 ? HighlighterViewOffScreenOffset : 0
-        highlighterView.frame.size.width = toView.frame.size.width + offsetForLastItem - offsetForFirstItem
+        selectedView.frame.size.width = toView.frame.size.width + offsetForLastItem - offsetForFirstItem
 
-        highlighterView.backgroundColor = items[toIndex].tintColor
+        selectedView.backgroundColor = items[toIndex].tintColor
 
         var newOffset: CGPoint?
 
-        if highlighterView.frame.origin.x + highlighterView.frame.size.width - scrollView.contentOffset.x > bounds.size.width {
-            let distance = highlighterView.frame.origin.x - scrollView.contentOffset.x
+        if selectedView.frame.origin.x + selectedView.frame.size.width - scrollView.contentOffset.x > bounds.size.width {
+            let distance = selectedView.frame.origin.x - scrollView.contentOffset.x
             let showed = bounds.size.width - distance
-            let mustShow = highlighterView.frame.size.width - showed
+            let mustShow = selectedView.frame.size.width - showed
             let newX = scrollView.contentOffset.x + mustShow - ( toIndex != itemsViews.count - 1 ? 0 : HighlighterViewOffScreenOffset )
             newOffset = CGPoint(x: newX, y: 0)
         }
 
-        if highlighterView.frame.origin.x < scrollView.contentOffset.x {
-            newOffset = CGPoint(x: highlighterView.frame.origin.x + ( toIndex != 0 ? 0 : HighlighterViewOffScreenOffset ), y: 0)
+        if selectedView.frame.origin.x < scrollView.contentOffset.x {
+            newOffset = CGPoint(x: selectedView.frame.origin.x + ( toIndex != 0 ? 0 : HighlighterViewOffScreenOffset ), y: 0)
         }
 
         if let offset = newOffset {
