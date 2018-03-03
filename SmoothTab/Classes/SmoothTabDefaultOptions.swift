@@ -1,6 +1,6 @@
 //
 //  SmoothTabDefaultOptions.swift
-//  SmothTab
+//  SmoothTab
 //
 //  Created by Yervand Saribekyan on 3/1/18.
 //  Copyright © 2018 Yervand Saribekyan. All rights reserved.
