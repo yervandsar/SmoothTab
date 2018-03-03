@@ -9,20 +9,20 @@
 import UIKit
 
 public struct SmoothTabItem {
-    public let image: UIImage?
-    public let selectedImage: UIImage?
-    public let title: String?
-    public let tintColor: UIColor?
+    public let image: UIImage
+    public let selectedImage: UIImage
+    public let title: String
+    public let tintColor: UIColor
 
     public init (
-        title: String?,
-        image: UIImage?,
-        selectedImage: UIImage?,
-        tintColor: UIColor?
+        title: String,
+        image: UIImage,
+        selectedImage: UIImage? = nil,
+        tintColor: UIColor
         ) {
         self.title = title
         self.image = image
-        self.selectedImage = selectedImage
+        self.selectedImage = selectedImage ?? image
         self.tintColor = tintColor
     }
 }
