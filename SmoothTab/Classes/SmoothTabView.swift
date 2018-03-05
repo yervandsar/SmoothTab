@@ -42,7 +42,7 @@ public class SmoothTabView: UIView {
 
     private var options: SmoothTabOptions = .default
 
-    var selectedSegmentIndex: Int = 0 {
+    private var selectedSegmentIndex: Int = 0 {
         didSet {
             if oldValue != selectedSegmentIndex {
                 selectItem(at: selectedSegmentIndex)
@@ -78,6 +78,7 @@ public class SmoothTabView: UIView {
     }
 
 	private func setOptions(_ options: SmoothTabOptions) {
+        stackView.spacing = options.itemsMargin
 		stackView.backgroundColor = options.backgroundColor
 		selectedView.layer.borderWidth = options.borderWidth
 		selectedView.layer.borderColor = options.borderColor.cgColor
@@ -122,16 +123,14 @@ public class SmoothTabView: UIView {
                 return stackView.arrangedSubviews.last as? UILabel
             }
             .forEach { $0.isHidden = true }
-        itemsViews
-            .filter { $0 == selectedView }
-            .enumerated()
-            .flatMap { index, stackView -> UILabel? in
-                if let imageView = stackView.arrangedSubviews.first as? UIImageView {
-                    imageView.image = items[index].selectedImage
-                }
-                return stackView.arrangedSubviews.last as? UILabel
-            }
-            .forEach { $0.isHidden = false }
+
+        if let imageView = selectedView.arrangedSubviews.first as? UIImageView {
+            imageView.image = items[index].selectedImage
+        }
+
+        if let label = selectedView.arrangedSubviews.last as? UILabel {
+            label.isHidden = false
+        }
     }
 
     override public func didMoveToWindow() {
@@ -147,6 +146,10 @@ public class SmoothTabView: UIView {
         super.layoutSubviews()
         moveHighlighterView(toItemAt: selectedSegmentIndex)
     }
+
+    public func tapItem(at index: Int) {
+        selectedSegmentIndex = index
+    }
     
 }
 
@@ -156,7 +159,6 @@ private extension SmoothTabView {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         stackView.distribution = .fill
-        stackView.spacing = options.itemsMargin
 
         addScrollView()
         addStackView()
