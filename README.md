@@ -3,6 +3,7 @@
 ![Swift 3.x](https://img.shields.io/badge/Swift-3.x-blue.svg)
 ![Swift 4.x](https://img.shields.io/badge/Swift-4.x-orange.svg)
 ![iOS 9.0+](https://img.shields.io/badge/iOS-9.0+-green.svg)
+![Badge w/ Version](https://img.shields.io/cocoapods/v/SmoothTab.svg)
 
 ![Preview](preview.png)
 
