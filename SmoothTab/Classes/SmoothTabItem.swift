@@ -13,16 +13,19 @@ public struct SmoothTabItem {
     public let selectedImage: UIImage
     public let title: String
     public let tintColor: UIColor
+    public let tag: String
 
     public init (
         title: String,
         image: UIImage,
         selectedImage: UIImage? = nil,
-        tintColor: UIColor
+        tintColor: UIColor,
+        tag: String = ""
         ) {
         self.title = title
         self.image = image
         self.selectedImage = selectedImage ?? image
         self.tintColor = tintColor
+        self.tag = (tag != "") ? tag : title
     }
 }
