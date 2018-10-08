@@ -42,14 +42,13 @@ public class SmoothTabView: UIView {
 
     private var options: SmoothTabOptions = .default
 
-    private var selectedSegmentIndex: Int? = nil {
+    private var selectedSegmentIndex: Int = 0 {
         didSet {
-            guard let recentlySelectedIndex = selectedSegmentIndex else { return }
-            if recentlySelectedIndex != oldValue {
-                selectItem(at: recentlySelectedIndex)
+            if oldValue != selectedSegmentIndex {
+                selectItem(at: selectedSegmentIndex)
                 selectedView.alpha = 1
-                transition(from: oldValue ?? 0, to: recentlySelectedIndex)
-                delegate?.smootItemSelected(at: recentlySelectedIndex)
+                transition(from: oldValue, to: selectedSegmentIndex)
+                delegate?.smootItemSelected(at: selectedSegmentIndex)
             }
         }
     }
@@ -136,7 +135,7 @@ public class SmoothTabView: UIView {
 
     override public func didMoveToWindow() {
         super.didMoveToWindow()
-		guard window != nil, let selectedSegmentIndex = selectedSegmentIndex else { return }
+		guard window != nil else { return }
 		layoutIfNeeded()
 		if itemsViews.count > selectedSegmentIndex {
 			transition(from: selectedSegmentIndex, to: selectedSegmentIndex)
@@ -145,9 +144,7 @@ public class SmoothTabView: UIView {
 
     override public func layoutSubviews() {
         super.layoutSubviews()
-        if let indexToHighlight = selectedSegmentIndex {
-            moveHighlighterView(toItemAt: indexToHighlight)
-        }
+        moveHighlighterView(toItemAt: selectedSegmentIndex)
     }
 
     public func tapItem(at index: Int) {
