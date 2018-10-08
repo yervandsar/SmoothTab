@@ -44,12 +44,10 @@ public class SmoothTabView: UIView {
 
     private var selectedSegmentIndex: Int = 0 {
         didSet {
-            if oldValue != selectedSegmentIndex {
-                selectItem(at: selectedSegmentIndex)
-                selectedView.alpha = 1
-                transition(from: oldValue, to: selectedSegmentIndex)
-                delegate?.smootItemSelected(at: selectedSegmentIndex)
-            }
+            selectItem(at: selectedSegmentIndex)
+            selectedView.alpha = 1
+            transition(from: oldValue, to: selectedSegmentIndex)
+            delegate?.smootItemSelected(at: selectedSegmentIndex)
         }
     }
 
