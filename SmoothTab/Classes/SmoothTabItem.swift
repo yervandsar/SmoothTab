@@ -32,5 +32,5 @@ public struct SmoothTabItem {
 
 extension SmoothTabItem: Equatable { }
 public func == (lhs: SmoothTabItem, rhs: SmoothTabItem) -> Bool {
-    return (lhs.tag == rhs.tag && lhs.title == rhs.title)
+    return (lhs.tag == rhs.tag && lhs.title == rhs.title && lhs.image == rhs.image && lhs.selectedImage == rhs.selectedImage)
 }
