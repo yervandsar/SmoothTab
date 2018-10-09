@@ -44,10 +44,11 @@ public class SmoothTabView: UIView {
 
     private var selectedSegmentIndex: Int = 0 {
         didSet {
-            selectItem(at: selectedSegmentIndex)
-            selectedView.alpha = 1
-            transition(from: oldValue, to: selectedSegmentIndex, animated: selectedSegmentIndex != oldValue)
-            delegate?.smootItemSelected(at: selectedSegmentIndex)
+            if selectItem(at: selectedSegmentIndex) == true {
+                selectedView.alpha = 1
+                transition(from: oldValue, to: selectedSegmentIndex, animated: selectedSegmentIndex != oldValue)
+                delegate?.smootItemSelected(at: selectedSegmentIndex)
+            }
         }
     }
 
@@ -110,7 +111,9 @@ public class SmoothTabView: UIView {
         itemsViews.forEach { stackView.addArrangedSubview($0) }
     }
 
-    private func selectItem(at index: Int) {
+    @discardableResult
+    private func selectItem(at index: Int) -> Bool {
+        guard itemsViews.count > index else { return false }
         let selectedView = itemsViews[index]
         itemsViews
             .enumerated()
@@ -129,6 +132,7 @@ public class SmoothTabView: UIView {
         if let label = selectedView.arrangedSubviews.last as? UILabel {
             label.isHidden = false
         }
+        return true
     }
 
     override public func didMoveToWindow() {
