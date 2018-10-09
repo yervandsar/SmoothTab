@@ -29,3 +29,8 @@ public struct SmoothTabItem {
         self.tag = (tag != "") ? tag : title
     }
 }
+
+extension SmoothTabItem: Equatable { }
+public func == (lhs: SmoothTabItem, rhs: SmoothTabItem) -> Bool {
+    return (lhs.tag == rhs.tag && lhs.title == rhs.title)
+}
