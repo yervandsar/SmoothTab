@@ -46,7 +46,7 @@ public class SmoothTabView: UIView {
         didSet {
             selectItem(at: selectedSegmentIndex)
             selectedView.alpha = 1
-            transition(from: oldValue, to: selectedSegmentIndex)
+            transition(from: oldValue, to: selectedSegmentIndex, animated: selectedSegmentIndex != oldValue)
             delegate?.smootItemSelected(at: selectedSegmentIndex)
         }
     }
@@ -329,22 +329,26 @@ private extension SmoothTabView {
 
 /// Animating
 private extension SmoothTabView {
-    func transition(from fromIndex: Int, to toIndex: Int) {
-        let animation = {
+    func transition(from fromIndex: Int, to toIndex: Int, animated: Bool = true) {
+        let actions = {
             self.stackView.layoutIfNeeded()
             self.layoutIfNeeded()
             self.moveHighlighterView(toItemAt: toIndex)
         }
-
-        UIView.animate(
-            withDuration: SwitchAnimationDuration,
-            delay: 0,
-            usingSpringWithDamping: 0.7,
-            initialSpringVelocity: 3,
-            options: [],
-            animations: animation,
-            completion: nil
-        )
+        
+        if animated {
+            UIView.animate(
+                withDuration: SwitchAnimationDuration,
+                delay: 0,
+                usingSpringWithDamping: 0.7,
+                initialSpringVelocity: 3,
+                options: [],
+                animations: actions,
+                completion: nil
+            )
+        } else {
+            actions()
+        }
     }
 
     func moveHighlighterView(toItemAt toIndex: Int) {
