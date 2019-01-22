@@ -28,6 +28,14 @@ public struct SmoothTabItem {
         self.tintColor = tintColor
         self.tag = (tag != "") ? tag : title
     }
+    
+    public func expectedWidth(for font: UIFont) -> CGFloat {
+        return self.title.boundingRect(
+            with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude),
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            attributes: [NSAttributedString.Key.font: font],
+            context: nil).width + self.image.size.width
+    }
 }
 
 extension SmoothTabItem: Equatable { }

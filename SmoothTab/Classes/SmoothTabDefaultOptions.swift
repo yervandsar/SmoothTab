@@ -18,6 +18,7 @@ public struct SmoothTabDefaultOptions {
 	/// Selected View Options
     static let titleFont: UIFont = .systemFont(ofSize: 14)
     static let titleColor: UIColor = .black
+    static let deselectedTitleColor: UIColor = .gray
 	static let cornerRadius: CornerRadius = .rounded
 	static let borderWidth: CGFloat = 0.0
 	static let borderColor: UIColor = .black

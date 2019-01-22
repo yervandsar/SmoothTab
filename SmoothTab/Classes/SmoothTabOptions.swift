@@ -35,6 +35,7 @@ public struct SmoothTabOptions {
 	/// Selected View Options
 	public var titleFont: UIFont = SmoothTabDefaultOptions.titleFont
 	public var titleColor: UIColor = SmoothTabDefaultOptions.titleColor
+    public var deselectedTitleColor: UIColor = SmoothTabDefaultOptions.deselectedTitleColor
 	public var cornerRadius: CornerRadius = SmoothTabDefaultOptions.cornerRadius
 	public var borderWidth: CGFloat = SmoothTabDefaultOptions.borderWidth
 	public var borderColor: UIColor = SmoothTabDefaultOptions.borderColor
