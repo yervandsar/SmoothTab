@@ -44,11 +44,14 @@ public class SmoothTabView: UIView {
 
     private var selectedSegmentIndex: Int = 0 {
         didSet {
-            if oldValue != selectedSegmentIndex {
-                selectItem(at: selectedSegmentIndex)
+            if selectItem(at: selectedSegmentIndex) == true {
                 selectedView.alpha = 1
-                transition(from: oldValue, to: selectedSegmentIndex)
+                transition(from: oldValue, to: selectedSegmentIndex, animated: selectedSegmentIndex != oldValue)
                 delegate?.smootItemSelected(at: selectedSegmentIndex)
+
+                for index in 0...(itemsViews.count-1) where index != selectedSegmentIndex {
+                    deselectItem(at: index)
+                }
             }
         }
     }
@@ -112,7 +115,9 @@ public class SmoothTabView: UIView {
         itemsViews.forEach { stackView.addArrangedSubview($0) }
     }
 
-    private func selectItem(at index: Int) {
+    @discardableResult
+    private func selectItem(at index: Int) -> Bool {
+        guard itemsViews.count > index else { return false }
         let selectedView = itemsViews[index]
         itemsViews
             .enumerated()
@@ -122,7 +127,7 @@ public class SmoothTabView: UIView {
                 }
                 return stackView.arrangedSubviews.last as? UILabel
             }
-            .forEach { $0.isHidden = true }
+            .forEach { $0.isHidden = viewsFitScreen() ? false : true }
 
         if let imageView = selectedView.arrangedSubviews.first as? UIImageView {
             imageView.image = items[index].selectedImage
@@ -130,6 +135,15 @@ public class SmoothTabView: UIView {
 
         if let label = selectedView.arrangedSubviews.last as? UILabel {
             label.isHidden = false
+            label.textColor = options.titleColor
+        }
+        return true
+    }
+    
+    private func deselectItem(at index: Int) {
+        guard itemsViews.count > index else { return }
+        if let label = itemsViews[index].arrangedSubviews.last as? UILabel {
+            label.textColor = options.deselectedTitleColor
         }
     }
 
@@ -331,22 +345,31 @@ private extension SmoothTabView {
 
 /// Animating
 private extension SmoothTabView {
-    func transition(from fromIndex: Int, to toIndex: Int) {
-        let animation = {
+    func transition(from fromIndex: Int, to toIndex: Int, animated: Bool = true) {
+        let actions = {
             self.stackView.layoutIfNeeded()
             self.layoutIfNeeded()
             self.moveHighlighterView(toItemAt: toIndex)
         }
-
-        UIView.animate(
-            withDuration: SwitchAnimationDuration,
-            delay: 0,
-            usingSpringWithDamping: 0.7,
-            initialSpringVelocity: 3,
-            options: [],
-            animations: animation,
-            completion: nil
-        )
+        
+        if animated {
+            UIView.animate(
+                withDuration: SwitchAnimationDuration,
+                delay: 0,
+                usingSpringWithDamping: 0.7,
+                initialSpringVelocity: 3,
+                options: [],
+                animations: actions,
+                completion: nil
+            )
+        } else {
+            actions()
+        }
+    }
+    
+    private func viewsFitScreen() -> Bool {
+        let tabWidths = items.map({ $0.expectedWidth(for: options.titleFont) + options.innerPadding * 2 + options.imageTitleMargin })
+        return tabWidths.reduce(0, +) <= UIScreen.main.bounds.width
     }
 
     func moveHighlighterView(toItemAt toIndex: Int) {
@@ -354,17 +377,22 @@ private extension SmoothTabView {
             return
         }
 
-        let toView = itemsViews[toIndex]
-
         // offset for first item
-        let point = convert(toView.frame.origin, to: self)
         let offsetForFirstItem: CGFloat = toIndex == 0 ? -HighlighterViewOffScreenOffset : 0
-        selectedView.frame.origin.x = point.x + offsetForFirstItem
 
         // offset for last item
         let offsetForLastItem: CGFloat = toIndex == itemsViews.count - 1 ? HighlighterViewOffScreenOffset : 0
-        selectedView.frame.size.width = toView.frame.size.width + offsetForLastItem - offsetForFirstItem
-
+        
+        if viewsFitScreen() == true && items.count == 2 { // if only 2 tabs, selection can take half of screen
+            let halfScreen = bounds.size.width / 2
+            selectedView.frame.origin.x = halfScreen * CGFloat(toIndex) + offsetForFirstItem
+            selectedView.frame.size.width = halfScreen + offsetForLastItem - offsetForFirstItem
+        } else {
+            let toView = itemsViews[toIndex]
+            let point = convert(toView.frame.origin, to: self)
+            selectedView.frame.origin.x = point.x + offsetForFirstItem
+            selectedView.frame.size.width = toView.frame.size.width + offsetForLastItem - offsetForFirstItem
+        }
         selectedView.backgroundColor = items[toIndex].tintColor
 
         var newOffset: CGPoint?
