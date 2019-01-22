@@ -12,7 +12,7 @@ public struct SmoothTabDefaultOptions {
     init() {}
 	/// Tabs parent view options
 	static let backgroundColor: UIColor = .white
-	static let imageContentMode: UIViewContentMode = .center
+	static let imageContentMode: UIView.ContentMode = .center
 	static let itemsMargin: CGFloat = 15.0
 
 	/// Selected View Options

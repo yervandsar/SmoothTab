@@ -110,7 +110,7 @@ public class SmoothTabView: UIView {
 
     private func render() {
         stackView.addSubview(selectedView)
-        stackView.sendSubview(toBack: selectedView)
+        stackView.sendSubviewToBack(selectedView)
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         itemsViews.forEach { stackView.addArrangedSubview($0) }
     }
