@@ -245,6 +245,19 @@ private extension SmoothTabView {
             constant: bounds.size.height
         )
         parentView.addConstraint(heightConstraint)
+        
+        if viewsFitScreen() && self.items.count > 0 {
+            let widthConstraint = NSLayoutConstraint(
+                item: parentView,
+                attribute: .width,
+                relatedBy: .equal,
+                toItem: nil,
+                attribute: .width,
+                multiplier: 1.0,
+                constant: bounds.size.width/CGFloat(self.items.count)
+            )
+            parentView.addConstraint(widthConstraint)
+        }
 
         parentView.isLayoutMarginsRelativeArrangement = true
         parentView.layoutMargins = UIEdgeInsets(
@@ -265,6 +278,17 @@ private extension SmoothTabView {
         imageView.image = item.image
         parentView.addArrangedSubview(imageView)
 
+        let imagewidthConstraint = NSLayoutConstraint(
+                       item: imageView,
+                       attribute: .width,
+                       relatedBy: .equal,
+                       toItem: nil,
+                       attribute: .width,
+                       multiplier: 1.0,
+                       constant: item.image.size.width
+                   )
+        imageView.addConstraint(imagewidthConstraint)
+        
         let label = UILabel()
         label.accessibilityIdentifier = kSmoothBarTitle + "_\(index)"
         label.text = item.title
