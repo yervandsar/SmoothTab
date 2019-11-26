@@ -28,7 +28,7 @@ public struct SmoothTabOptions {
 
 	/// Tabs parent view options
 	public var backgroundColor: UIColor = SmoothTabDefaultOptions.backgroundColor
-	public var imageContentMode: UIViewContentMode = SmoothTabDefaultOptions.imageContentMode
+	public var imageContentMode: UIView.ContentMode = SmoothTabDefaultOptions.imageContentMode
 	public var itemsMargin: CGFloat = SmoothTabDefaultOptions.itemsMargin
 	public var shadow: SmoothTabShadowOptions?
 

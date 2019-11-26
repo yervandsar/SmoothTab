@@ -44,7 +44,7 @@ public class SmoothTabView: UIView {
 
     private var selectedSegmentIndex: Int = 0 {
         didSet {
-            if selectItem(at: selectedSegmentIndex) == true {
+            if selectItem(at: selectedSegmentIndex) {
                 selectedView.alpha = 1
                 transition(from: oldValue, to: selectedSegmentIndex, animated: selectedSegmentIndex != oldValue)
                 delegate?.smootItemSelected(at: selectedSegmentIndex)
@@ -110,7 +110,7 @@ public class SmoothTabView: UIView {
 
     private func render() {
         stackView.addSubview(selectedView)
-        stackView.sendSubview(toBack: selectedView)
+        stackView.sendSubviewToBack(selectedView)
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         itemsViews.forEach { stackView.addArrangedSubview($0) }
     }
@@ -121,7 +121,7 @@ public class SmoothTabView: UIView {
         let selectedView = itemsViews[index]
         itemsViews
             .enumerated()
-            .flatMap { index, stackView -> UILabel? in
+            .compactMap { index, stackView -> UILabel? in
                 if let imageView = stackView.arrangedSubviews.first as? UIImageView {
                     imageView.image = items[index].image
                 }

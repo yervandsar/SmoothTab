@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 s.name             = 'SmoothTab'
-s.version          = '1.0.2'
+s.version          = '1.1.1'
 s.summary          = 'Smooth customizabled tabs for iOS apps.'
 
 s.homepage         = 'https://github.com/yervandsar/SmoothTab'
