@@ -312,8 +312,6 @@ private extension SmoothTabView {
         parentView.addSubview(imageView)
 
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.widthAnchor.constraint(equalToConstant: imageView.image?.size.width ?? 0).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: imageView.image?.size.height ?? 0).isActive = true
         imageView.centerYAnchor.constraint(equalTo: parentView.centerYAnchor).isActive = true
         
         let label = UILabel()
