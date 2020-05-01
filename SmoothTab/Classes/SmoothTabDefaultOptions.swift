@@ -10,13 +10,13 @@ import UIKit
 
 public struct SmoothTabDefaultOptions {
     init() {}
-	/// Tabs parent view options
+	// MARK: Tabs parent view options
 	static let backgroundColor: UIColor = .white
 	static let imageContentMode: UIView.ContentMode = .center
 	static let itemsMargin: CGFloat = 15.0
     static let align: SmoothTabOptions.ContentPreferredAlign = .left
 
-	/// Selected View Options
+	// MARK:  Selected View Options
     static let titleFont: UIFont = .systemFont(ofSize: 14)
     static let titleColor: UIColor = .black
     static let deselectedTitleColor: UIColor = .gray

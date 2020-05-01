@@ -12,38 +12,11 @@ import UIKit
     func smootItemSelected(at index: Int)
 }
 
-public class SmoothTabView: UIView {
+public final class SmoothTabView: UIView {
+    internal let scrollView = UIScrollView()
+    internal let stackView = UIStackView()
 
-    private class TabContentsView: UIView {
-        private let preferredCollapsedWidth: CGFloat
-        private let preferredExpandedWidth: CGFloat
-        var widthConstraint: NSLayoutConstraint?
-        
-        required init(collapsedWidth: CGFloat, expandedWidth: CGFloat) {
-            self.preferredCollapsedWidth = collapsedWidth
-            self.preferredExpandedWidth = expandedWidth
-            super.init(frame: CGRect.zero)
-        }
-        
-        required init?(coder aDecoder: NSCoder) {
-            self.preferredCollapsedWidth = 0
-            self.preferredExpandedWidth = 0
-            super.init(coder: aDecoder)
-        }
-        
-        func expand() {
-            widthConstraint?.constant = preferredExpandedWidth
-        }
-        
-        func collapse() {
-            widthConstraint?.constant = preferredCollapsedWidth
-        }
-    }
-    
-    private let scrollView = UIScrollView()
-    private let stackView = UIStackView()
-
-    private lazy var selectedView: UIView = {
+    internal lazy var selectedView: UIView = {
         let frame = CGRect(
 			origin: CGPoint.zero,
 			size: CGSize(width: 0, height: self.bounds.height
@@ -55,20 +28,21 @@ public class SmoothTabView: UIView {
         return selectedView
     }()
 
-    private var items = [SmoothTabItem]() {
+    internal var items = [SmoothTabItem]() {
         didSet {
-            itemsViews = items.enumerated().map { index, item in smoothBarItemView(for: item, at: index) }
+            itemsViews = items.enumerated().map { [unowned self] in self.smoothBarItemView(for: $1, at: $0) }
         }
     }
-    private var itemsViews = [TabContentsView]() {
+
+    internal var itemsViews = [TabContentsView]() {
         didSet {
             render()
         }
     }
 
-    private var options: SmoothTabOptions = .default
+    internal var options: SmoothTabOptions = .default
 
-    private var selectedSegmentIndex: Int = 0 {
+    internal var selectedSegmentIndex: Int = 0 {
         didSet {
             if selectItem(at: selectedSegmentIndex) {
                 selectedView.alpha = 1
@@ -95,10 +69,7 @@ public class SmoothTabView: UIView {
         commonInit()
     }
 
-    public func setup(
-        with items: [SmoothTabItem],
-        options: SmoothTabOptions = .default,
-        delegate: SmoothTabDelegate?) {
+    public func setup(with items: [SmoothTabItem], options: SmoothTabOptions = .default, delegate: SmoothTabDelegate?) {
         self.options = options
         self.items = items
         self.delegate = delegate
@@ -113,7 +84,7 @@ public class SmoothTabView: UIView {
 		switch options.cornerRadius {
 		case .rounded:
 			selectedView.layer.cornerRadius = bounds.size.height / 2
-		case let .fixed(corner):
+		case .fixed(let corner):
 			selectedView.layer.cornerRadius = corner
 		}
 		if let shadowOptions = options.shadow {
@@ -140,8 +111,7 @@ public class SmoothTabView: UIView {
         itemsViews.forEach { stackView.addArrangedSubview($0) }
     }
 
-    @discardableResult
-    private func selectItem(at index: Int) -> Bool {
+    @discardableResult private func selectItem(at index: Int) -> Bool {
         guard itemsViews.count > index else { return false }
         let selectedView = itemsViews[index]
         itemsViews
@@ -204,7 +174,7 @@ public class SmoothTabView: UIView {
     
 }
 
-/// Setup
+// MARK: - Setup
 private extension SmoothTabView {
     func commonInit() {
         scrollView.showsVerticalScrollIndicator = false
@@ -216,51 +186,10 @@ private extension SmoothTabView {
 
     }
 
-    func addScrollView() {
-        addSubview(scrollView)
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        let topConstraint = NSLayoutConstraint(
-            item: scrollView,
-            attribute: .top,
-            relatedBy: .equal,
-            toItem: self,
-            attribute: .top,
-            multiplier: 1.0,
-            constant: 0
-        )
-        let rightConstraint = NSLayoutConstraint(
-            item: scrollView,
-            attribute: .right,
-            relatedBy: .equal,
-            toItem: self,
-            attribute: .right,
-            multiplier: 1.0,
-            constant: 0
-        )
-        let leftConstraint = NSLayoutConstraint(
-            item: scrollView,
-            attribute: .left,
-            relatedBy: .equal,
-            toItem: self,
-            attribute: .left,
-            multiplier: 1.0,
-            constant: 0
-        )
-        let bottomConstraint = NSLayoutConstraint(
-            item: scrollView,
-            attribute: .bottom,
-            relatedBy: .equal,
-            toItem: self,
-            attribute: .bottom,
-            multiplier: 1.0,
-            constant: 0
-        )
-        addConstraints([
-            topConstraint,
-            rightConstraint,
-            bottomConstraint,
-            leftConstraint
-            ])
+    @objc private func itemTapped(_ sender: UITapGestureRecognizer) {
+        guard let selectedView = sender.view else { return }
+        selectedSegmentIndex = selectedView.tag
+
     }
 
     private func smoothBarItemView(for item: SmoothTabItem, at index: Int) -> TabContentsView {
@@ -345,145 +274,5 @@ private extension SmoothTabView {
         label.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for:.horizontal)
         
         return parentView
-    }
-
-    @objc private func itemTapped(_ sender: UITapGestureRecognizer) {
-        guard let selectedView = sender.view else { return }
-        selectedSegmentIndex = selectedView.tag
-
-    }
-}
-
-/// Setup Constraints
-private extension SmoothTabView {
-    func addStackView() {
-        scrollView.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        let topConstraint = NSLayoutConstraint(
-            item: stackView,
-            attribute: .top,
-            relatedBy: .equal,
-            toItem: scrollView,
-            attribute: .top,
-            multiplier: 1.0,
-            constant: 0
-        )
-        let rightConstraint = NSLayoutConstraint(
-            item: stackView,
-            attribute: .right,
-            relatedBy: .equal,
-            toItem: scrollView,
-            attribute: .right,
-            multiplier: 1.0,
-            constant: 0
-        )
-        let leftConstraint = NSLayoutConstraint(
-            item: stackView,
-            attribute: .left,
-            relatedBy: .equal,
-            toItem: scrollView,
-            attribute: .left,
-            multiplier: 1.0,
-            constant: 0
-        )
-        let bottomConstraint = NSLayoutConstraint(
-            item: stackView,
-            attribute: .bottom,
-            relatedBy: .equal,
-            toItem: scrollView,
-            attribute: .bottom,
-            multiplier: 1.0,
-            constant: 0
-        )
-        let widthConstraint = NSLayoutConstraint(
-            item: stackView,
-            attribute: .width,
-            relatedBy: .equal,
-            toItem: scrollView,
-            attribute: .width,
-            multiplier: 1.0,
-            constant: 150
-        )
-        widthConstraint.priority = UILayoutPriority(Float(250))
-        addConstraints([
-            topConstraint,
-            rightConstraint,
-            bottomConstraint,
-            leftConstraint,
-            widthConstraint
-            ])
-    }
-}
-
-/// Animating
-private extension SmoothTabView {
-    func transition(from fromIndex: Int, to toIndex: Int, animated: Bool = true) {
-        let actions = {
-            self.layoutIfNeeded()
-            self.stackView.setNeedsLayout()
-            self.stackView.layoutIfNeeded()
-            self.moveHighlighterView(toItemAt: toIndex)
-        }
-        
-        if animated {
-            UIView.animate(
-                withDuration: SwitchAnimationDuration,
-                delay: 0,
-                usingSpringWithDamping: 0.7,
-                initialSpringVelocity: 3,
-                options: [],
-                animations: actions,
-                completion: nil
-            )
-        } else {
-            actions()
-        }
-    }
-    
-    private func viewsFitScreen() -> Bool {
-        let tabWidths = items.map({ $0.expectedWidthWhenExpanded(for: options) + options.innerPadding * 2 + options.imageTitleMargin })
-        return tabWidths.reduce(0, +) <= UIScreen.main.bounds.width
-    }
-
-    func moveHighlighterView(toItemAt toIndex: Int) {
-        guard itemsViews.count > toIndex else {
-            return
-        }
-
-        // offset for first item
-        let offsetForFirstItem: CGFloat = toIndex == 0 ? -HighlighterViewOffScreenOffset : 0
-
-        // offset for last item
-        let offsetForLastItem: CGFloat = toIndex == itemsViews.count - 1 ? HighlighterViewOffScreenOffset : 0
-        
-        if viewsFitScreen() == true && items.count == 2 { // if only 2 tabs, selection can take half of screen
-            let halfScreen = bounds.size.width / 2
-            selectedView.frame.origin.x = halfScreen * CGFloat(toIndex) + offsetForFirstItem
-            selectedView.frame.size.width = halfScreen + offsetForLastItem - offsetForFirstItem
-        } else {
-            let toView = itemsViews[toIndex]
-            let point = convert(toView.frame.origin, to: self)
-            selectedView.frame.origin.x = point.x + offsetForFirstItem
-            selectedView.frame.size.width = toView.frame.size.width + offsetForLastItem - offsetForFirstItem
-        }
-        selectedView.backgroundColor = items[toIndex].tintColor
-
-        var newOffset: CGPoint?
-
-        if selectedView.frame.origin.x + selectedView.frame.size.width - scrollView.contentOffset.x > bounds.size.width {
-            let distance = selectedView.frame.origin.x - scrollView.contentOffset.x
-            let showed = bounds.size.width - distance
-            let mustShow = selectedView.frame.size.width - showed
-            let newX = scrollView.contentOffset.x + mustShow - ( toIndex != itemsViews.count - 1 ? 0 : HighlighterViewOffScreenOffset )
-            newOffset = CGPoint(x: newX, y: 0)
-        }
-
-        if selectedView.frame.origin.x < scrollView.contentOffset.x {
-            newOffset = CGPoint(x: selectedView.frame.origin.x + ( toIndex != 0 ? 0 : HighlighterViewOffScreenOffset ), y: 0)
-        }
-
-        if let offset = newOffset {
-            scrollView.setContentOffset(offset, animated: true)
-        }
     }
 }

@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bNW-VR-5pD">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="bNW-VR-5pD">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="XMU-00-uXa">
             <objects>
-                <viewController id="bNW-VR-5pD" customClass="ViewController" customModule="SmoothTab_Example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="bNW-VR-5pD" customClass="ViewController" customModule="SmoothTab" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yIS-4R-Hhf"/>
                         <viewControllerLayoutGuide type="bottom" id="gMU-lz-gdc"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="CUn-y9-PHa">
+                    <view key="view" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CUn-y9-PHa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iAF-O2-xQL" customClass="SmoothTabView" customModule="SmoothTab">
-                                <rect key="frame" x="0.0" y="70" width="375" height="60"/>
+                                <rect key="frame" x="0.0" y="50" width="375" height="60"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="wDj-IQ-7N6"/>
@@ -32,11 +28,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="iAF-O2-xQL" firstAttribute="top" secondItem="yIS-4R-Hhf" secondAttribute="bottom" constant="50" id="Ajy-x4-92G"/>
                             <constraint firstItem="iAF-O2-xQL" firstAttribute="leading" secondItem="CUn-y9-PHa" secondAttribute="leading" id="XYI-QO-NFH"/>
-                            <constraint firstItem="iAF-O2-xQL" firstAttribute="top" secondItem="yIS-4R-Hhf" secondAttribute="bottom" constant="50" id="dH7-2M-fOB"/>
                             <constraint firstAttribute="trailing" secondItem="iAF-O2-xQL" secondAttribute="trailing" id="iD4-wS-2TE"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Snb-8c-g91"/>
                     </view>
                     <connections>
                         <outlet property="smoothTabView" destination="iAF-O2-xQL" id="55K-rG-f9B"/>
@@ -44,6 +39,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q5h-fW-bxA" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="138" y="133"/>
         </scene>
     </scenes>
 </document>

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3EF51886245C70A400F60C21 /* TabContentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF51885245C70A400F60C21 /* TabContentsView.swift */; };
+		3EF51888245C71A400F60C21 /* SmoothTabView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF51887245C71A400F60C21 /* SmoothTabView+Constraints.swift */; };
+		3EF5188A245C73B400F60C21 /* SmoothTabView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF51889245C73B400F60C21 /* SmoothTabView+Animations.swift */; };
 		C1D8D0CF20492869006A4D80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D8D0CE20492869006A4D80 /* AppDelegate.swift */; };
 		C1D8D0D120492869006A4D80 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D8D0D020492869006A4D80 /* ViewController.swift */; };
 		C1D8D0D420492869006A4D80 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1D8D0D220492869006A4D80 /* Main.storyboard */; };
@@ -25,6 +28,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3EF51885245C70A400F60C21 /* TabContentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabContentsView.swift; sourceTree = "<group>"; };
+		3EF51887245C71A400F60C21 /* SmoothTabView+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SmoothTabView+Constraints.swift"; sourceTree = "<group>"; };
+		3EF51889245C73B400F60C21 /* SmoothTabView+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SmoothTabView+Animations.swift"; sourceTree = "<group>"; };
 		C1D8D0CB20492868006A4D80 /* SmoothTab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmoothTab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1D8D0CE20492869006A4D80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C1D8D0D020492869006A4D80 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -55,6 +61,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3EF51884245C706A00F60C21 /* SmoothTabView */ = {
+			isa = PBXGroup;
+			children = (
+				C1D8D0E320492941006A4D80 /* SmoothTabView.swift */,
+				3EF51885245C70A400F60C21 /* TabContentsView.swift */,
+				3EF51887245C71A400F60C21 /* SmoothTabView+Constraints.swift */,
+				3EF51889245C73B400F60C21 /* SmoothTabView+Animations.swift */,
+			);
+			path = SmoothTabView;
+			sourceTree = "<group>";
+		};
 		C1D8D0C220492868006A4D80 = {
 			isa = PBXGroup;
 			children = (
@@ -92,11 +109,11 @@
 		C1D8D0E02049288B006A4D80 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3EF51884245C706A00F60C21 /* SmoothTabView */,
 				C1D8D0E520492941006A4D80 /* Array+Extensions.swift */,
 				C1D8D0E120492941006A4D80 /* SmoothTabDefaultOptions.swift */,
 				C1D8D0E420492941006A4D80 /* SmoothTabItem.swift */,
 				C1D8D0E220492941006A4D80 /* SmoothTabOptions.swift */,
-				C1D8D0E320492941006A4D80 /* SmoothTabView.swift */,
 				C1D8D0EB20492978006A4D80 /* Constants.swift */,
 			);
 			path = Classes;
@@ -134,6 +151,7 @@
 				TargetAttributes = {
 					C1D8D0CA20492868006A4D80 = {
 						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 1140;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -180,12 +198,15 @@
 			files = (
 				C1D8D0D120492869006A4D80 /* ViewController.swift in Sources */,
 				C1D8D0CF20492869006A4D80 /* AppDelegate.swift in Sources */,
+				3EF51886245C70A400F60C21 /* TabContentsView.swift in Sources */,
 				C1D8D0E720492941006A4D80 /* SmoothTabOptions.swift in Sources */,
 				C1D8D0EA20492941006A4D80 /* Array+Extensions.swift in Sources */,
 				C1D8D0E620492941006A4D80 /* SmoothTabDefaultOptions.swift in Sources */,
 				C1D8D0E920492941006A4D80 /* SmoothTabItem.swift in Sources */,
 				C1D8D0E820492941006A4D80 /* SmoothTabView.swift in Sources */,
+				3EF5188A245C73B400F60C21 /* SmoothTabView+Animations.swift in Sources */,
 				C1D8D0EC20492978006A4D80 /* Constants.swift in Sources */,
+				3EF51888245C71A400F60C21 /* SmoothTabView+Constraints.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,11 +350,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SmoothTab/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yervandsar.SmoothTab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -345,11 +366,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SmoothTab/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yervandsar.SmoothTab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
