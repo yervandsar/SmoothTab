@@ -29,12 +29,23 @@ public struct SmoothTabItem {
         self.tag = (tag != "") ? tag : title
     }
     
-    public func expectedWidth(for font: UIFont) -> CGFloat {
+    public func expectedWidthWhenExpanded(for options: SmoothTabOptions) -> CGFloat {
         return self.title.boundingRect(
             with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude),
             options: [.usesLineFragmentOrigin, .usesFontLeading],
-            attributes: [NSAttributedString.Key.font: font],
-            context: nil).width + self.image.size.width
+            attributes: [NSAttributedString.Key.font: options.titleFont],
+            context: nil).width
+            + self.image.size.width
+            + options.imageTitleMargin
+            + options.innerPadding * 2
+            + options.borderWidth
+            + 2 // small increase to justify possible miss in label width accuracy
+    }
+    
+    public func expectedWidthWhenCollapsed(for options: SmoothTabOptions) -> CGFloat {
+        return self.image.size.width
+            + options.innerPadding * 2
+            + options.borderWidth
     }
 }
 

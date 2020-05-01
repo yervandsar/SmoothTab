@@ -14,6 +14,7 @@ public struct SmoothTabDefaultOptions {
 	static let backgroundColor: UIColor = .white
 	static let imageContentMode: UIView.ContentMode = .center
 	static let itemsMargin: CGFloat = 15.0
+    static let align: SmoothTabOptions.ContentPreferredAlign = .left
 
 	/// Selected View Options
     static let titleFont: UIFont = .systemFont(ofSize: 14)

@@ -27,6 +27,7 @@ class ViewController: UIViewController, SmoothTabDelegate {
         options.titleColor = UIColor.white
         options.titleFont = .systemFont(ofSize: 16)
         options.shadow = .default
+        options.align = .left
         smoothTabView.setup(with: items, options: options, delegate: self)
     }
 

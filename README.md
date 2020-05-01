@@ -66,6 +66,7 @@ public struct SmoothTabOptions {
 	public var imageContentMode: UIViewContentMode
 	public var itemsMargin: CGFloat
 	public var shadow: SmoothTabShadowOptions?
+    public var align: ContentPreferredAlign
 
 	/// Selected View Options
 	public var titleFont: UIFont

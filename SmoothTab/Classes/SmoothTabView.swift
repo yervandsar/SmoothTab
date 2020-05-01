@@ -14,6 +14,32 @@ import UIKit
 
 public class SmoothTabView: UIView {
 
+    private class TabContentsView: UIView {
+        private let preferredCollapsedWidth: CGFloat
+        private let preferredExpandedWidth: CGFloat
+        var widthConstraint: NSLayoutConstraint?
+        
+        required init(collapsedWidth: CGFloat, expandedWidth: CGFloat) {
+            self.preferredCollapsedWidth = collapsedWidth
+            self.preferredExpandedWidth = expandedWidth
+            super.init(frame: CGRect.zero)
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            self.preferredCollapsedWidth = 0
+            self.preferredExpandedWidth = 0
+            super.init(coder: aDecoder)
+        }
+        
+        func expand() {
+            widthConstraint?.constant = preferredExpandedWidth
+        }
+        
+        func collapse() {
+            widthConstraint?.constant = preferredCollapsedWidth
+        }
+    }
+    
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
 
@@ -34,7 +60,7 @@ public class SmoothTabView: UIView {
             itemsViews = items.enumerated().map { index, item in smoothBarItemView(for: item, at: index) }
         }
     }
-    private var itemsViews = [UIStackView]() {
+    private var itemsViews = [TabContentsView]() {
         didSet {
             render()
         }
@@ -46,12 +72,11 @@ public class SmoothTabView: UIView {
         didSet {
             if selectItem(at: selectedSegmentIndex) {
                 selectedView.alpha = 1
-                transition(from: oldValue, to: selectedSegmentIndex, animated: selectedSegmentIndex != oldValue)
-                delegate?.smootItemSelected(at: selectedSegmentIndex)
-
                 for index in 0...(itemsViews.count-1) where index != selectedSegmentIndex {
                     deselectItem(at: index)
                 }
+                transition(from: oldValue, to: selectedSegmentIndex, animated: selectedSegmentIndex != oldValue)
+                delegate?.smootItemSelected(at: selectedSegmentIndex)
             }
         }
     }
@@ -122,28 +147,40 @@ public class SmoothTabView: UIView {
         itemsViews
             .enumerated()
             .compactMap { index, stackView -> UILabel? in
-                if let imageView = stackView.arrangedSubviews.first as? UIImageView {
+                if let imageView = stackView.subviews.first as? UIImageView {
                     imageView.image = items[index].image
                 }
-                return stackView.arrangedSubviews.last as? UILabel
+                return stackView.subviews.last as? UILabel
             }
             .forEach { $0.isHidden = viewsFitScreen() ? false : true }
 
-        if let imageView = selectedView.arrangedSubviews.first as? UIImageView {
+        if let imageView = selectedView.subviews.first as? UIImageView {
             imageView.image = items[index].selectedImage
         }
 
-        if let label = selectedView.arrangedSubviews.last as? UILabel {
+        if let label = selectedView.subviews.last as? UILabel {
             label.isHidden = false
             label.textColor = options.titleColor
+            if label.isHidden {
+                selectedView.collapse()
+            } else {
+                selectedView.expand()
+            }
         }
+        
         return true
     }
     
     private func deselectItem(at index: Int) {
         guard itemsViews.count > index else { return }
-        if let label = itemsViews[index].arrangedSubviews.last as? UILabel {
+        let deselectedView = itemsViews[index]
+        if let label = deselectedView.subviews.last as? UILabel {
             label.textColor = options.deselectedTitleColor
+            if label.isHidden {
+                deselectedView.collapse()
+            } else {
+                deselectedView.expand()
+            }
         }
     }
 
@@ -226,12 +263,16 @@ private extension SmoothTabView {
             ])
     }
 
-    func smoothBarItemView(for item: SmoothTabItem, at index: Int) -> UIStackView {
+    private func smoothBarItemView(for item: SmoothTabItem, at index: Int) -> TabContentsView {
 
-        let parentView = UIStackView()
+        let parentView: TabContentsView
+        if viewsFitScreen() {
+            let halfOfScreen = (UIScreen.main.bounds.width - options.itemsMargin * CGFloat(items.count - 1)) / CGFloat(self.items.count)
+            parentView = TabContentsView(collapsedWidth: halfOfScreen, expandedWidth: halfOfScreen)
+        } else {
+            parentView = TabContentsView(collapsedWidth: item.expectedWidthWhenCollapsed(for: options), expandedWidth: item.expectedWidthWhenExpanded(for: options))
+        }
         parentView.tag = index
-        parentView.spacing = options.imageTitleMargin
-        parentView.distribution = .fill
         parentView.accessibilityIdentifier = kSmoothBarView + "_\(index)"
 
         parentView.translatesAutoresizingMaskIntoConstraints = false
@@ -245,13 +286,18 @@ private extension SmoothTabView {
             constant: bounds.size.height
         )
         parentView.addConstraint(heightConstraint)
-
-        parentView.isLayoutMarginsRelativeArrangement = true
-        parentView.layoutMargins = UIEdgeInsets(
-			top: 0,
-			left: options.innerPadding,
-			bottom: 0,
-			right: options.innerPadding)
+        
+        let widthConstraint = NSLayoutConstraint(
+            item: parentView,
+            attribute: .width,
+            relatedBy: .equal,
+            toItem: nil,
+            attribute: .width,
+            multiplier: 1.0,
+            constant: item.expectedWidthWhenCollapsed(for: options)
+        )
+        parentView.addConstraint(widthConstraint)
+        parentView.widthConstraint = widthConstraint
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(itemTapped(_:)))
         tapGesture.numberOfTapsRequired = 1
@@ -263,20 +309,46 @@ private extension SmoothTabView {
         imageView.accessibilityIdentifier = kSmoothBarImage + "_\(index)"
         imageView.contentMode = options.imageContentMode
         imageView.image = item.image
-        parentView.addArrangedSubview(imageView)
+        parentView.addSubview(imageView)
 
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.centerYAnchor.constraint(equalTo: parentView.centerYAnchor).isActive = true
+        
         let label = UILabel()
         label.accessibilityIdentifier = kSmoothBarTitle + "_\(index)"
         label.text = item.title
         label.font = options.titleFont
         label.textColor = options.titleColor
         label.isHidden = true
-        parentView.addArrangedSubview(label)
+        parentView.addSubview(label)
+
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.centerYAnchor.constraint(equalTo: parentView.centerYAnchor).isActive = true
+
+        switch options.align {
+        case .left:
+            imageView.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: options.innerPadding).isActive = true
+            label.leftAnchor.constraint(equalTo: imageView.rightAnchor, constant: options.imageTitleMargin).isActive = true
+            label.rightAnchor.constraint(lessThanOrEqualTo: parentView.rightAnchor, constant: -options.innerPadding).isActive = true
+        case .center:
+            label.centerXAnchor.constraint(equalTo: parentView.centerXAnchor, constant: (options.imageTitleMargin + (imageView.image?.size.width ?? 0))/2).isActive = true
+            imageView.rightAnchor.constraint(equalTo: label.leftAnchor, constant: -options.imageTitleMargin).isActive = true
+            imageView.leftAnchor.constraint(greaterThanOrEqualTo: parentView.leftAnchor, constant: options.innerPadding).isActive = true
+            label.rightAnchor.constraint(lessThanOrEqualTo: parentView.rightAnchor, constant: options.innerPadding).isActive = true
+        case .right:
+            label.rightAnchor.constraint(equalTo: parentView.rightAnchor, constant: -options.innerPadding).isActive = true
+            imageView.rightAnchor.constraint(equalTo: label.leftAnchor, constant: -options.imageTitleMargin).isActive = true
+            imageView.leftAnchor.constraint(greaterThanOrEqualTo: parentView.leftAnchor, constant: options.innerPadding).isActive = true
+        }
+
+        imageView.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for:.horizontal)
+        label.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for:.horizontal)
+        
         return parentView
     }
 
     @objc private func itemTapped(_ sender: UITapGestureRecognizer) {
-        guard let selectedView = sender.view as? UIStackView else { return }
+        guard let selectedView = sender.view else { return }
         selectedSegmentIndex = selectedView.tag
 
     }
@@ -347,8 +419,9 @@ private extension SmoothTabView {
 private extension SmoothTabView {
     func transition(from fromIndex: Int, to toIndex: Int, animated: Bool = true) {
         let actions = {
-            self.stackView.layoutIfNeeded()
             self.layoutIfNeeded()
+            self.stackView.setNeedsLayout()
+            self.stackView.layoutIfNeeded()
             self.moveHighlighterView(toItemAt: toIndex)
         }
         
@@ -368,7 +441,7 @@ private extension SmoothTabView {
     }
     
     private func viewsFitScreen() -> Bool {
-        let tabWidths = items.map({ $0.expectedWidth(for: options.titleFont) + options.innerPadding * 2 + options.imageTitleMargin })
+        let tabWidths = items.map({ $0.expectedWidthWhenExpanded(for: options) + options.innerPadding * 2 + options.imageTitleMargin })
         return tabWidths.reduce(0, +) <= UIScreen.main.bounds.width
     }
 
